@@ -18,7 +18,8 @@ def fourier_zoom(image, z=2):
 
     Args:
         image (np.ndarray): 2D grid of pixel values.
-        z (int): Factor by which to multiply the dimensions of the image. Must be >= 1.
+        z (float): Factor by which to multiply the dimensions of the image.
+            Must be >= 1.
 
     Returns:
         np.ndarray: zoomed image.
@@ -119,6 +120,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=('Fourier zoom'))
     parser.add_argument('input_image', help=('path to the input image file'))
     parser.add_argument('output_image', help=('path to the output image file'))
-    parser.add_argument('zoom', type=int, help=('zoom factor'))
+    parser.add_argument('zoom', type=float, help=('zoom factor'))
     args = parser.parse_args()
     main(args.input_image, args.output_image, args.zoom)
