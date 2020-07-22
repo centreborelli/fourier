@@ -1,4 +1,4 @@
-# Copyright (C) 2019, Carlo de Franchis <carlo.de-franchis@ens-cachan.fr>
+# Copyright (C) 2019, Carlo de Franchis <carlo.de-franchis@ens-paris-saclay.fr>
 
 import os
 import argparse
@@ -48,6 +48,14 @@ def fourier_zoom(image, z=2):
     # to preserve the values of the original samples, the L2 norm has to be
     # multiplied by z*z.
     out *= z * z
+
+    # clip values to avoid overflow when casting to input dtype
+    if np.issubdtype(image.dtype, np.integer):
+        i = np.iinfo(image.dtype)
+        out = np.round(out)
+    else:
+        i = np.finfo(image.dtype)
+    out = np.clip(out, i.min, i.max)
 
     # return the image casted to the input data type
     return out.astype(image.dtype)
