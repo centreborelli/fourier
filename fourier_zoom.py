@@ -104,10 +104,9 @@ def rasterio_write(path, array, profile={}, tags={}):
                    dtype=array.dtype)
 
     # write to file
-    with rasterio.Env():
-        with rasterio.open(path, 'w', **profile) as dst:
-            dst.write(np.transpose(array, (2, 0, 1)))
-            dst.update_tags(**tags)
+    with rasterio.open(path, 'w', **profile) as dst:
+        dst.write(np.transpose(array, (2, 0, 1)))
+        dst.update_tags(**tags)
 
 
 def main(input_image_path, output_image_path, zoom_factor):
@@ -116,7 +115,10 @@ def main(input_image_path, output_image_path, zoom_factor):
     with rasterio.open(input_image_path, 'r') as f:
         img = f.read().squeeze()
 
-    rasterio_write(output_image_path, fourier_zoom(img, zoom_factor))
+    rasterio_write(output_image_path,
+                   fourier_zoom(img, zoom_factor),
+                   profile={"tiled": True,
+                            "compress": "deflate"})
 
 
 if __name__ == '__main__':
