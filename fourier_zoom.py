@@ -47,7 +47,10 @@ def fourier_zoom(image, z=2):
 
     # to preserve the values of the original samples, the L2 norm has to be
     # multiplied by z*z.
-    return out * z * z
+    out *= z * z
+
+    # return the image casted to the input data type
+    return out.astype(image.dtype)
 
 
 def _test_fourier_zoom(w, h, z=2):
